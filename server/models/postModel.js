@@ -10,10 +10,11 @@ const postSchema = mongoose.Schema(
       default: new Date(),
     },
     image: String,
+    hashtags:[String],
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 var PostModel = mongoose.model("Posts", postSchema);

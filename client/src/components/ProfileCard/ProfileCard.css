@@ -1,28 +1,32 @@
 .ProfileCard {
-  border-radius: 1.5rem;
+  border-radius: 1rem;
+  background-color: var(--cardColor);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  position: relative;
-  overflow-x: clip;
-  background-color: var(--cardColor);
-  box-shadow: var(--profileShadow);
-  padding-bottom: 1rem;
   width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-bottom: 1.5rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.ProfileCard:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* Profile Images */
 .ProfileImages {
   position: relative;
+  width: 100%;
 }
 
 .coverImage {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
   object-position: center;
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
 }
 
 .profileImage {
@@ -34,8 +38,8 @@
   left: 50%;
   transform: translateX(-50%);
   object-fit: cover;
-  box-shadow: var(--profileShadow);
-  border: 3px solid white;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Profile Name */
@@ -48,13 +52,14 @@
 }
 
 .ProfileName > span:first-child {
-  font-weight: bold;
-  font-size: 18px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .ProfileName > span:last-child {
   color: var(--gray);
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
 /* Follow Status */
@@ -63,6 +68,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .followStatus > hr {
@@ -74,35 +80,69 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .follow {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.2rem;
 }
 
 .follow > span:first-child {
   font-weight: bold;
+  font-size: 1rem;
+  color: #222;
 }
 
 .follow > span:last-child {
+  font-size: 0.85rem;
   color: var(--gray);
-  font-size: 13px;
 }
 
 .vl {
   height: 40px;
-  border-left: 2px solid var(--hrColor);
+  border-left: 1.5px solid var(--hrColor);
 }
 
 /* My Profile Link */
 .myProfileLink {
-  font-weight: bold;
-  color: orange;
-  align-self: center;
+  font-weight: 500;
+  color: #ff7a00;
+  text-align: center;
   cursor: pointer;
-  margin-top: -0.5rem;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.myProfileLink:hover {
+  color: #e65c00;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .coverImage {
+    height: 140px;
+  }
+
+  .profileImage {
+    width: 5rem;
+    height: 5rem;
+    bottom: -2.5rem;
+  }
+
+  .ProfileName > span:first-child {
+    font-size: 1rem;
+  }
+
+  .followStats {
+    gap: 1rem;
+  }
+
+  .vl {
+    display: none;
+  }
 }

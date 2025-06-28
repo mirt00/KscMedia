@@ -7,9 +7,11 @@ import NotLike from "../../img/notlike.png";
 import { likePost } from "../../api/PostsRequests";
 import PostHeader from "../PostHeader/PostHeader";
 import { useSelector } from "react-redux";
-import { getUser } from "../../api/UserRequests"; // You need to create this function
+import { getUser } from "../../api/UserRequests";
+import { useNavigate } from "react-router-dom";
 
 const Post = ({ data }) => {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer.authData);
   const [liked, setLiked] = useState(data.likes.includes(user._id));
   const [likes, setLikes] = useState(data.likes.length);
@@ -24,7 +26,6 @@ const Post = ({ data }) => {
         console.error("Error fetching user:", err);
       }
     };
-
     fetchUser();
   }, [data.userId]);
 
@@ -34,35 +35,51 @@ const Post = ({ data }) => {
     liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1);
   };
 
+const handlePostClick = () => {
+  navigate(`/post/${data._id}`);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
   return (
-    <div className="Post">
-      {postUser && <PostHeader user={postUser} createdAt={data.createdAt} post={data} />}
+    <div
+      className="PostCard"
+      onClick={handlePostClick}
+    >
+      {postUser && (
+        <PostHeader user={postUser} createdAt={data.createdAt} post={data} />
+      )}
+          <span class="caption">{data.desc}</span>
+      {data.image && (
+        <div className="PostImageContainer">
+          <img
+            className="PostImage"
+            src={process.env.REACT_APP_PUBLIC_FOLDER + data.image}
+            alt="Post"
+          />
+        </div>
+      )}
 
+      <div className="PostContent">
+        <div
+          className="PostActions"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img
+            src={liked ? Heart : NotLike}
+            alt="like"
+            className="PostIcon"
+            onClick={handleLike}
+          />
+          <img src={Comment} alt="comment" className="PostIcon" />
+          <img src={Share} alt="share" className="PostIcon" />
+        </div>
 
-      <img
-        src={data.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""}
-        alt=""
-      />
+        <span className="PostLikes">{likes} likes</span>
 
-      <div className="postReact">
-        <img
-          src={liked ? Heart : NotLike}
-          alt=""
-          style={{ cursor: "pointer" }}
-          onClick={handleLike}
-        />
-        <img src={Comment} alt="" />
-        <img src={Share} alt="" />
-      </div>
+        <div className="PostDesc">
+          <span className="PostAuthor"><b>{data.name} </b></span>
 
-      <span style={{ color: "var(--gray)", fontSize: "12px" }}>
-        {likes} likes
-      </span>
-      <div className="detail">
-        <span>
-          <b>{data.name} </b>
-        </span>
-        <span>{data.desc}</span>
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import PostModel from "../models/postModel.js";
 import UserModel from "../models/userModel.js";
 import mongoose from "mongoose";
 
-// creating a post
+import {tokenize, termFrequency, inverseDocumentFrequency, tfidfVector, cosineSimilarity} from '../utils/tfidf.js';
 
 export const createPost = async (req, res) => {
   const newPost = new PostModel(req.body);
@@ -119,3 +119,39 @@ export const getTimelinePosts = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+
+
+
+export const getSimilarPostsByDescription = async (req, res) => {
+  try {
+    const targetPost = await PostModel.findById(req.params.postId);
+    if (!targetPost) return res.status(404).json({ message: 'Post not found' });
+
+    const otherPosts = await PostModel.find({ _id: { $ne: targetPost._id } });
+
+    // ✅ Use desc instead of content
+    const targetTokens = tokenize(targetPost.desc);
+    const otherTokens = otherPosts.map(post => tokenize(post.desc));
+
+    const idf = inverseDocumentFrequency([targetTokens, ...otherTokens]);
+
+    const targetVector = tfidfVector(targetTokens, idf);
+    const otherVectors = otherTokens.map(tokens => tfidfVector(tokens, idf));
+
+    const similarities = otherVectors.map((vec, index) => ({
+      post: otherPosts[index],
+      score: cosineSimilarity(targetVector, vec),
+    }));
+
+    similarities.sort((a, b) => b.score - a.score);
+
+    const topSimilarPosts = similarities.slice(0, 5).map(item => item.post);
+
+    res.json(topSimilarPosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

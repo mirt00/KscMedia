@@ -1,22 +1,115 @@
-.Post
-{
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    background-color: var(--cardColor);
-    border-radius: 1rem;
-    gap: 1rem;
+/* Post Container */
+.PostCard {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin: 1.5rem auto;
+  max-width: 600px;
+  width: 100%;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  padding: 1rem; /* added internal padding */
+  box-sizing: border-box;
 }
 
-.Post>img{
-    width: 100%;
-    max-height: 20rem;
-    object-fit: cover;
-    border-radius: 0.5rem;
+.caption{
+    margin:1.5rem;
 }
 
-.postReact{
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
+
+
+.PostCard:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Image Container */
+.PostImageContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #f5f5f5;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Image Styling */
+.PostImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Content Section */
+.PostContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Action Icons */
+.PostActions {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  padding: 0.2rem 0;
+}
+
+/* Icons */
+.PostIcon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.PostIcon:hover {
+  transform: scale(1.2);
+}
+
+/* Likes */
+.PostLikes {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Description Section */
+.PostDesc {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.PostAuthor {
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .PostCard {
+    margin: 1rem 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .PostContent {
+    gap: 0.6rem;
+  }
+
+  .PostIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .PostLikes {
+    font-size: 13px;
+  }
+
+  .PostDesc {
+    font-size: 14px;
+  }
 }

@@ -3,4 +3,21 @@
   display: grid;
   grid-template-columns: 18rem auto 20rem;
   gap: 1rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Tablet devices */
+@media screen and (max-width: 992px) {
+  .Home {
+    grid-template-columns: 16rem auto;
+  }
+}
+
+/* Mobile devices */
+@media screen and (max-width: 768px) {
+  .Home {
+    grid-template-columns: 1fr;
+  }
 }

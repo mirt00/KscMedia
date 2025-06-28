@@ -1,31 +1,26 @@
 import MessageModel from "../models/messageModel.js";
 
-export const addMessage  = async (req, res) => {
-  const { chatId, senderId, encryptedText } = req.body;
-
+export const addMessage = async (req, res) => {
+  const { chatId, senderId, text } = req.body;
+  const message = new MessageModel({
+    chatId,
+    senderId,
+    text,
+  });
   try {
-    const decryptedText = decrypt(encryptedText); // Manual RSA decryption
-
-    const message = new MessageModel({
-      chatId,
-      senderId,
-      encryptedText,
-      decryptedText, // Optional – useful for debugging only
-    });
-
-    const savedMessage = await message.save();
-    res.status(200).json(savedMessage);
+    const result = await message.save();
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json(error.message);
+    res.status(500).json(error);
   }
 };
 
-// Get all messages of a chat
 export const getMessages = async (req, res) => {
+  const { chatId } = req.params;
   try {
-    const messages = await MessageModel.find({ chatId: req.params.chatId });
-    res.status(200).json(messages);
+    const result = await MessageModel.find({ chatId });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json(error.message);
+    res.status(500).json(error);
   }
 };

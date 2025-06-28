@@ -17,6 +17,7 @@ const Posts = () => {
   if(params.id) posts = posts.filter((post)=> post.userId===params.id)
   return (
     <div className="Posts">
+      <div>Posts</div>
       {loading
         ? "Fetching posts...."
         : posts.map((post, id) => {
