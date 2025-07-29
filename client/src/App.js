@@ -1,5 +1,7 @@
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Home from "./pages/Home";
 import Auth from "./pages/Auth/Auth";
 import Profile from "./pages/Profile/Profile";
@@ -18,6 +20,8 @@ function App() {
             : "auto",
       }}
     >
+            <ToastContainer position="top-center" autoClose={2000} />
+
       <div className="blur" style={{ top: "-18%", right: "0" }}></div>
       <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
       <Routes>

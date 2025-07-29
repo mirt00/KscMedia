@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import * as UploadApi from "../api/UploadRequest";
 
 export const uploadImage = (data) => async (dispatch) => {
@@ -33,12 +34,16 @@ export const updatePost = (id, postData) => async (dispatch) => {
   }
 };
 
-// 🔹 Delete Post
+// delete Post
+
 export const deletePost = (id) => async (dispatch) => {
   try {
     await UploadApi.deletePost(id);
     dispatch({ type: "DELETE_POST", payload: id });
+    toast.success("🗑️ Post deleted successfully!");
   } catch (error) {
     console.log(error);
+    toast.error("❌ Failed to delete the post.");
   }
 };
+

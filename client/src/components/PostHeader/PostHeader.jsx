@@ -1,12 +1,16 @@
+// PostHeader.jsx
+
 import React, { useState, useRef, useEffect } from "react";
 import "./PostHeader.css";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { BsThreeDots } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import   { deletePost }  from "../../actions/UploadAction"; // ✅ Make sure deletePost is a named export
+import { deletePost } from "../../actions/UploadAction";
 
-const PostHeader = ({ user, createdAt, post }) => {
+const PostHeader = ({ user, createdAt, post, onEdit }) => {
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -14,18 +18,16 @@ const PostHeader = ({ user, createdAt, post }) => {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-  if (!post || !post._id) {
-    console.error("Post or post._id is undefined");
-    return;
-  }
-  dispatch(deletePost(post._id));
-  setDropdownOpen(false);
-};
-
+    if (!post || !post._id) {
+      console.error("Post or post._id is undefined");
+      return;
+    }
+    dispatch(deletePost(post._id));
+    setDropdownOpen(false);
+  };
 
   const handleEdit = () => {
-    // You can trigger a modal or pass a callback prop to lift this up
-    alert("Trigger edit modal for post: " + post._id);
+    if (onEdit) onEdit(); // 🔁 Call parent's edit handler
     setDropdownOpen(false);
   };
 
@@ -69,8 +71,12 @@ const PostHeader = ({ user, createdAt, post }) => {
           />
           {dropdownOpen && (
             <div className="dropdown">
-              <span onClick={handleEdit}>✏️ Edit</span>
-              <span onClick={handleDelete}>🗑️ Delete</span>
+              <span onClick={handleEdit} className="dropdownItem">
+                <FiEdit /> Edit
+              </span>
+              <span onClick={handleDelete} className="dropdownItem">
+                <AiOutlineDelete /> Delete
+              </span>
             </div>
           )}
         </div>

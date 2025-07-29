@@ -30,23 +30,34 @@ export const getPost = async (req, res) => {
 
 // update post
 export const updatePost = async (req, res) => {
-  const postId = req.params.id;
-  const { userId } = req.body;
+  const postId = req.params.id.trim();
+  const { userId, desc } = req.body;
 
   try {
     const post = await PostModel.findById(postId);
+    if (!post) return res.status(404).json("Post not found");
+
     if (post.userId === userId) {
-      await post.updateOne({ $set: req.body });
-      res.status(200).json("Post updated!");
+      const updatedPost = await PostModel.findByIdAndUpdate(
+        postId,
+        { desc },
+        { new: true } // Return updated document
+      );
+      return res.status(200).json(updatedPost);
     } else {
-      res.status(403).json("Authentication failed");
+      return res.status(403).json("Unauthorized: You can only edit your own posts");
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return res.status(500).json({ message: "Internal server error", error });
+  }
 };
+
+
 
 // delete a post
 export const deletePost = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id.trim();
   const { userId } = req.body;
 
   try {

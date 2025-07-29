@@ -18,4 +18,8 @@ export const uploadPost = (data) => API.post("/posts", data);
 export const updatePost = (id, data) => API.put(`/posts/${id}`, data);
 
 // 🔹 NEW: Delete a specific post
-export const deletePost = (id) => API.delete(`/posts/${id}`);
+// export const deletePost = (id) => API.delete(`/posts/${id}`);
+export const deletePost = (id) => {
+  const userId = JSON.parse(localStorage.getItem('profile'))?.user?._id;
+  return API.delete(`/posts/${id}`, { data: { userId } });  // ⚠️ Axios DELETE must use "data" key for body
+};
