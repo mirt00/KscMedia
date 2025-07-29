@@ -64,22 +64,39 @@ const PostHeader = ({ user, createdAt, post, onEdit }) => {
       </Link>
 
       {currentUser._id === user._id && (
-        <div className="dotsMenu" ref={dropdownRef}>
-          <BsThreeDots
-            className="dotsIcon"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          />
-          {dropdownOpen && (
-            <div className="dropdown">
-              <span onClick={handleEdit} className="dropdownItem">
-                <FiEdit /> Edit
-              </span>
-              <span onClick={handleDelete} className="dropdownItem">
-                <AiOutlineDelete /> Delete
-              </span>
-            </div>
-          )}
-        </div>
+      <div
+  className="dotsMenu"
+  ref={dropdownRef}
+  onClick={(e) => e.stopPropagation()} // 🛑 Add this line to prevent post click
+>
+  <BsThreeDots
+    className="dotsIcon"
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+  />
+  {dropdownOpen && (
+    <div className="dropdown">
+      <span
+        onClick={(e) => {
+          e.stopPropagation(); // 🛑 Prevent navigation
+          handleEdit();
+        }}
+        className="dropdownItem"
+      >
+        <FiEdit /> Edit
+      </span>
+      <span
+        onClick={(e) => {
+          e.stopPropagation(); // 🛑 Prevent navigation
+          handleDelete();
+        }}
+        className="dropdownItem"
+      >
+        <AiOutlineDelete /> Delete
+      </span>
+    </div>
+  )}
+</div>
+
       )}
     </div>
   );

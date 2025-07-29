@@ -57,9 +57,9 @@ const Post = ({ data }) => {
     try {
       await dispatch(updatePost(data._id, { desc: editedCaption }));
       data.desc = editedCaption; // Update locally
-      toast.success("✅ Post updated");
+      toast.success("Post updated");
     } catch (err) {
-      toast.error("❌ Failed to update");
+      toast.error("Failed to update");
     }
     setIsEditing(false);
   };
