@@ -5,3 +5,15 @@
     align-items: center;
     overflow: auto;
 }
+
+/* Default: hide on large screens */
+.responsive-followers-card {
+  display: none;
+}
+
+/* Show only on tablets and smaller (≤ 992px) */
+@media screen and (max-width: 992px) {
+  .responsive-followers-card {
+    display: block;
+  }
+}

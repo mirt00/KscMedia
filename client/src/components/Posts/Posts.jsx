@@ -5,24 +5,34 @@ import { useSelector, useDispatch } from "react-redux";
 import "./Posts.css";
 import { useParams } from "react-router-dom";
 
-const Posts = () => {
-  const params = useParams()
+const Posts = ({ searchValue }) => {
+  const params = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
   let { posts, loading } = useSelector((state) => state.postReducer);
+
   useEffect(() => {
     dispatch(getTimelinePosts(user._id));
-  }, []);
-  if(!posts) return 'No Posts';
-  if(params.id) posts = posts.filter((post)=> post.userId===params.id)
+  }, [dispatch, user._id]);
+
+  if (!posts) return "No Posts";
+
+  if (params.id) {
+    posts = posts.filter((post) => post.userId === params.id);
+  }
+
+  if (searchValue.trim() !== "") {
+    const searchLower = searchValue.toLowerCase();
+    posts = posts.filter((post) =>
+      post.desc?.toLowerCase().includes(searchLower)
+    );
+  }
+
   return (
     <div className="Posts">
-      <div>Posts</div>
       {loading
         ? "Fetching posts...."
-        : posts.map((post, id) => {
-            return <Post data={post} key={id} />;
-          })}
+        : posts.map((post, index) => <Post data={post} key={index} />)}
     </div>
   );
 };

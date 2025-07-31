@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import PostSide from "../components/PostSide/PostSide";
 import ProfileSide from "../components/profileSide/ProfileSide";
 import RightSide from "../components/RightSide/RightSide";
-import "./Home.css";
 import NavIcons from "../components/NavIcons/NavIcons";
-const Home = () => {
-  return (
-    <div>
-      <NavIcons></NavIcons>
-    <div className="Home">
-      <ProfileSide/>
-      <PostSide />
+import "./Home.css";
 
-    </div>
-    </div>
+const Home = () => {
+  const [searchValue, setSearchValue] = useState("");  // search state here
+
+  return (
+    <>
+      <NavIcons
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
+      <div className="Home">
+        <ProfileSide />
+        <PostSide searchValue={searchValue} />
+        <RightSide />
+      </div>
+    </>
   );
 };
 

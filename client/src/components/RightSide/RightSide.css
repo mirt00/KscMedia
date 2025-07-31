@@ -1,8 +1,15 @@
-.RightSide{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+/* Default: show RightSide */
+.RightSide {
+  display: block;
 }
+
+/* Hide RightSide on tablet or smaller screens (≤ 992px) */
+@media screen and (max-width: 992px) {
+  .RightSide {
+    display: none;
+  }
+}
+
 
 
 .navIcons{
