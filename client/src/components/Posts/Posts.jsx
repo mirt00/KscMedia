@@ -5,23 +5,25 @@ import { useSelector, useDispatch } from "react-redux";
 import "./Posts.css";
 import { useParams } from "react-router-dom";
 
-const Posts = ({ searchValue }) => {
+const Posts = ({ searchValue = "" }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
   let { posts, loading } = useSelector((state) => state.postReducer);
 
   useEffect(() => {
-    dispatch(getTimelinePosts(user._id));
-  }, [dispatch, user._id]);
+    if (user && user._id) {
+      dispatch(getTimelinePosts(user._id));
+    }
+  }, [dispatch, user?._id]);
 
-  if (!posts) return "No Posts";
+  if (!Array.isArray(posts)) return <div>No Posts</div>;
 
   if (params.id) {
     posts = posts.filter((post) => post.userId === params.id);
   }
 
-  if (searchValue.trim() !== "") {
+  if (searchValue && searchValue.trim() !== "") {
     const searchLower = searchValue.toLowerCase();
     posts = posts.filter((post) =>
       post.desc?.toLowerCase().includes(searchLower)

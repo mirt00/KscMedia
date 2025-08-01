@@ -1,0 +1,98 @@
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --input-border: #e5e7eb;
+  --input-focus: #c7d2fe;
+  --text-color: #111827;
+  --bg-color: #ffffff;
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 45%;
+  min-width: 200px;
+}
+
+.form-group.full-width {
+  flex: 1 1 100%;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background-color: #f9fafb;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="file"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: #fff;
+  box-shadow: 0 0 0 2px var(--input-focus);
+}
+
+.upload-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.upload-row .form-group {
+  flex: 1 1 45%;
+}
+
+.btn-update {
+  align-self: flex-end;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-update:hover {
+  background-color: var(--primary-hover);
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .btn-update {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}

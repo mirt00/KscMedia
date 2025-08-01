@@ -15,7 +15,6 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const dispatch = useDispatch();
   const param = useParams();
 
-  const { user } = useSelector((state) => state.authReducer.authData);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -29,122 +28,91 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
     }
   };
 
-  // form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     let UserData = formData;
-    if (profileImage) {
+
+    const uploadAndSetImage = async (image, nameKey) => {
       const data = new FormData();
-      const fileName = Date.now() + profileImage.name;
+      const fileName = Date.now() + image.name;
       data.append("name", fileName);
-      data.append("file", profileImage);
-      UserData.profilePicture = fileName;
+      data.append("file", image);
+      UserData[nameKey] = fileName;
       try {
         dispatch(uploadImage(data));
       } catch (err) {
         console.log(err);
       }
-    }
-    if (coverImage) {
-      const data = new FormData();
-      const fileName = Date.now() + coverImage.name;
-      data.append("name", fileName);
-      data.append("file", coverImage);
-      UserData.coverPicture = fileName;
-      try {
-        dispatch(uploadImage(data));
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    };
+
+    if (profileImage) uploadAndSetImage(profileImage, "profilePicture");
+    if (coverImage) uploadAndSetImage(coverImage, "coverPicture");
+
     dispatch(updateUser(param.id, UserData));
     setModalOpened(false);
   };
 
   return (
     <Modal
-      overlayColor={
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[9]
-          : theme.colors.gray[2]
-      }
+      overlayColor={theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.colors.gray[2]}
       overlayOpacity={0.55}
       overlayBlur={3}
       size="55%"
       opened={modalOpened}
       onClose={() => setModalOpened(false)}
+      centered
+      title="Update Your Info"
     >
-      <form className="infoForm" onSubmit={handleSubmit}>
-        <h3>Your Info</h3>
-        <div>
-          <input
-            value={formData.firstname}
-            onChange={handleChange}
-            type="text"
-            placeholder="First Name"
-            name="firstname"
-            className="infoInput"
-          />
-          <input
-            value={formData.lastname}
-            onChange={handleChange}
-            type="text"
-            placeholder="Last Name"
-            name="lastname"
-            className="infoInput"
-          />
+      <form className="profileForm" onSubmit={handleSubmit}>
+        <div className="form-row">
+          <div className="form-group">
+            <label>First Name</label>
+            <input type="text" name="firstname" value={formData.firstname} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Last Name</label>
+            <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} />
+          </div>
         </div>
 
-        <div>
-          <input
-            value={formData.worksAt}
-            onChange={handleChange}
-            type="text"
-            placeholder="Works at"
-            name="worksAt"
-            className="infoInput"
-          />
+        <div className="form-row">
+          <div className="form-group full-width">
+            <label>Works At</label>
+            <input type="text" name="worksAt" value={formData.worksAt} onChange={handleChange} />
+          </div>
         </div>
 
-        <div>
-          <input
-            value={formData.livesIn}
-            onChange={handleChange}
-            type="text"
-            placeholder="Lives in"
-            name="livesIn"
-            className="infoInput"
-          />
-          <input
-            value={formData.country}
-            onChange={handleChange}
-            type="text"
-            placeholder="Country"
-            name="country"
-            className="infoInput"
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label>Lives In</label>
+            <input type="text" name="livesIn" value={formData.livesIn} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Country</label>
+            <input type="text" name="country" value={formData.country} onChange={handleChange} />
+          </div>
         </div>
 
-        <div>
-          <input
-            value={formData.relationship}
-            onChange={handleChange}
-            type="text"
-            className="infoInput"
-            placeholder="Relationship status"
-            name="relationship"
-          />
+        <div className="form-row">
+          <div className="form-group full-width">
+            <label>Relationship Status</label>
+            <input type="text" name="relationship" value={formData.relationship} onChange={handleChange} />
+          </div>
         </div>
 
-        <div>
-          Profile image
-          <input type="file" name="profileImage" onChange={onImageChange} />
-          Cover image
-          <input type="file" name="coverImage" onChange={onImageChange} />
+        <div className="form-row upload-row">
+          <div className="form-group">
+            <label>Profile Image</label>
+            <input type="file" name="profileImage" onChange={onImageChange} />
+          </div>
+          <div className="form-group">
+            <label>Cover Image</label>
+            <input type="file" name="coverImage" onChange={onImageChange} />
+          </div>
         </div>
 
-        <button className="button infoButton" type="submit">
-          Update
+        <button type="submit" className="btn-update">
+          Update Info
         </button>
       </form>
     </Modal>

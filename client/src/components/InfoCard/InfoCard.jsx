@@ -8,76 +8,65 @@ import * as UserApi from "../../api/UserRequests.js";
 import { logout } from "../../actions/AuthActions";
 
 const InfoCard = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const params = useParams();
   const [modalOpened, setModalOpened] = useState(false);
   const profileUserId = params.id;
   const [profileUser, setProfileUser] = useState({});
   const { user } = useSelector((state) => state.authReducer.authData);
 
-
-  const handleLogOut = ()=> {
-    dispatch(logout())
-  }
-
+  const handleLogOut = () => {
+    dispatch(logout());
+  };
 
   useEffect(() => {
     const fetchProfileUser = async () => {
       if (profileUserId === user._id) {
         setProfileUser(user);
       } else {
-        console.log("fetching")
         const profileUser = await UserApi.getUser(profileUserId);
         setProfileUser(profileUser);
-        console.log(profileUser)
       }
     };
     fetchProfileUser();
-  }, [user]);
+  }, [user, profileUserId]);
 
   return (
     <div className="InfoCard">
-      <div className="infoHead">
-        <h4>Profile Info</h4>
-        {user._id === profileUserId ? (
-          <div>
-            <UilPen
-              width="2rem"
-              height="1.2rem"
-              onClick={() => setModalOpened(true)}
-            />
+      <div className="info-header">
+        <h3>Profile Info</h3>
+        {user._id === profileUserId && (
+          <>
+            <UilPen className="edit-icon" onClick={() => setModalOpened(true)} />
             <ProfileModal
               modalOpened={modalOpened}
               setModalOpened={setModalOpened}
-              data = {user}
+              data={user}
             />
-          </div>
-        ) : (
-          ""
+          </>
         )}
       </div>
 
-      <div className="info">
-        {/* */}
-        <span>
-          <b>Status </b>
-        </span>
-        <span>{profileUser.relationship}</span>
-      </div>
-      <div className="info">
-        <span>
-          <b>Lives in </b>
-        </span>
-        <span>{profileUser.livesIn}</span>
-      </div>
-      <div className="info">
-        <span>
-          <b>Works at </b>
-        </span>
-        <span>{profileUser.worksAt}</span>
+      <div className="info-body">
+        <div className="info-item">
+          <span className="label">Status:</span>
+          <span>{profileUser.relationship || "Not specified"}</span>
+        </div>
+        <div className="info-item">
+          <span className="label">Lives in:</span>
+          <span>{profileUser.livesIn || "Unknown"}</span>
+        </div>
+        <div className="info-item">
+          <span className="label">Works at:</span>
+          <span>{profileUser.worksAt || "Not mentioned"}</span>
+        </div>
       </div>
 
-      <button className="button logout-button" onClick={handleLogOut}>Log Out</button>
+      {user._id === profileUserId && (
+        <button className="button logout-button" onClick={handleLogOut}>
+          Log Out
+        </button>
+      )}
     </div>
   );
 };
