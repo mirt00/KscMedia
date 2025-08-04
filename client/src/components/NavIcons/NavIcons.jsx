@@ -41,7 +41,7 @@ const NavIcons = ({ searchValue, setSearchValue }) => {
         </Link>
         <button className="nav-btn" aria-label="Settings">
           <UilSetting size="24" />
-        </button>
+        </button> 
         <button className="nav-btn" aria-label="Notifications">
           <img src={NotiIcon} alt="Notifications" />
         </button>
