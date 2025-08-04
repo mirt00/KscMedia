@@ -15,7 +15,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     setNewMessage(newMessage)
   }
 
-  // fetching data for header
   useEffect(() => {
     const userId = chat?.members?.find((id) => id !== currentUser);
     const getUserData = async () => {
@@ -30,7 +29,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     if (chat !== null) getUserData();
   }, [chat, currentUser]);
 
-  // fetch messages
+
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -44,15 +43,11 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     if (chat !== null) fetchMessages();
   }, [chat]);
 
-
-  // Always scroll to last Message
   useEffect(()=> {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   },[messages])
 
 
-
-  // Send Message
   const handleSend = async(e)=> {
     e.preventDefault()
     const message = {
@@ -61,9 +56,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
       chatId: chat._id,
   }
   const receiverId = chat.members.find((id)=>id!==currentUser);
-  // send message to socket server
+
   setSendMessage({...message, receiverId})
-  // send message to database
+
   try {
     const { data } = await addMessage(message);
     setMessages([...messages, data]);
@@ -75,7 +70,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   }
 }
 
-// Receive Message from parent component
 useEffect(()=> {
   console.log("Message Arrived: ", receivedMessage)
   if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
